@@ -1,0 +1,7 @@
+---
+# tasks file for base-common-jenkins
+- name: Import the tasks for creation of users module
+  import_tasks: create-user-group.yml
+
+- name: Installation yum packages
+  import_tasks: install-yum-packages.yml

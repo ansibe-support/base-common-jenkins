@@ -1,0 +1,100 @@
+---
+- name: Install the below listed yum packages
+  become: yes 
+  yum:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - gcc
+    - make
+    - curl-devel
+    - wget
+    - expat-devel
+    - gettext-devel
+    - bzip2
+    - python3
+    - python3-jinja2
+    - bc
+    - openssl-devel
+    - zlib-devel
+    - readline-devel
+    - python3-devel
+    - python36-devel.x86_64
+
+
+- name: Install python-crypto for the version 6
+  yum:
+    name: python-crypto
+    state: present
+  when: ansible_distribution_major_version == '6'
+
+- name: Install libffi-devel for the version 7
+  yum:
+    name: libffi-devel
+    state: present
+  # when: ansible_distribution_major_version == '7'
+
+
+
+#Download Software from remote location ot github
+# Rpm Locations https://pkgs.org/
+
+# - name: setting up epel_packages
+#   set_fact:
+#     epel_softwares:
+#       - oniguruma-5.9.5-3.el7.x86_64.rpm
+#       - jq-1.5-1.el7.x86_64.rpm
+#       - libtommath-0.42.0-6.el7.x86_64.rpm
+#       - libtomcrypt-1.17-25.el7.x86_64.rpm
+#       - python2-crypto-2.6.1-15.el7.x86_64.rpm
+#       - python36-crypto-2.6.1-16.el7.x86_64.rpm
+#       - sshpass-1.06-2.el7.x86_64.rpm
+
+- name: setting epl repo list 
+  set_fact:
+    epel_softwares:
+      - https://rpmfind.net/linux/epel/7/x86_64/Packages/o/oniguruma-5.9.5-3.el7.x86_64.rpm
+      - https://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/j/jq-1.5-1.el7.x86_64.rpm
+      - http://mirror.centos.org/centos/7/extras/x86_64/Packages/libtommath-0.42.0-6.el7.x86_64.rpm
+      - https://centos.pkgs.org/7/centos-extras-x86_64/libtomcrypt-1.17-26.el7.x86_64.rpm.html
+      - http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libtomcrypt-1.17-25.el7.x86_64.rpm
+      - http://mirror.centos.org/centos/7/extras/x86_64/Packages/python2-crypto-2.6.1-15.el7.x86_64.rpm
+      - http://mirror.centos.org/centos/7/extras/x86_64/Packages/sshpass-1.06-2.el7.x86_64.rpm
+      - http://download-ib01.fedoraproject.org/pub/epel/7/x86_64/Packages/p/python36-crypto-2.6.1-16.el7.x86_64.rpm
+  # when: ansible_distribution_major_version == '7'
+# Rpm Locations https://pkgs.org/
+
+# - name: Download file and force basic auth
+#   get_url:
+#     url: https://github.com/saikrishnama/ansible-jenkins-install-rpm/blob/master/"{{ item }}"?raw=true
+#     dest: /opt/"{{item}}"
+#   loop:
+#     epel_softwares
+
+- name: Download file and force basic auth
+  get_url:
+    url: '{{ item }}'
+    dest: /opt/"{{item}}"
+  loop:
+    epel_softwares
+
+
+- name: download epel packages if required
+  
+- name: install epel packages
+  yum:
+    name: /opt/"{{ item }}"
+    state: present
+  loop:
+    epel_softwares
+
+- name: Install the ' Development tools' package Group
+  yum:
+    name: '@Development tools'
+    state: present
+
+
+
+
+
+
